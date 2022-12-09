@@ -5,10 +5,13 @@ import com.sparta.springsecurity.entity.User;
 import com.sparta.springsecurity.entity.UserRoleEnum;
 import com.sparta.springsecurity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
@@ -59,6 +62,21 @@ public class UserController {
         userRepository.save(user);
 
         return "redirect:/api/user/login-page";
+    }
+
+    @PostMapping("/login")
+    public String login(@AuthenticationPrincipal UserDetails userDetails) {
+        System.out.println("*********************************************************");
+        System.out.println("UserController.login");
+        System.out.println("userDetails.getUsername() = " + userDetails.getUsername());
+        System.out.println("*********************************************************");
+
+        return "redirect:/api/user/login-page";
+    }
+
+    @PostMapping("/forbidden")
+    public ModelAndView forbidden() {
+        return new ModelAndView("forbidden");
     }
 
 }
